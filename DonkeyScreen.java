@@ -7,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.udacity.gamedev.donkeykong.overlays.PeachHud;
 import com.udacity.gamedev.donkeykong.util.Assets;
 import com.udacity.gamedev.donkeykong.util.ChaseCam;
 import com.udacity.gamedev.donkeykong.util.Constants;
@@ -25,10 +24,6 @@ public class DonkeyScreen extends ScreenAdapter {
 
     private Music backgroundMusic;
 
-    private int contNivel = 0;
-
-    private PeachHud peachHud;
-
     public DonkeyScreen(){
     }
 
@@ -41,22 +36,20 @@ public class DonkeyScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         gameplayViewport = new ExtendViewport(Constants.WORLD_SIZE*2, Constants.WORLD_SIZE*2);
 
-        peachHud = new PeachHud();
-        //level = LevelLoader.load("Level1", gameplayViewport);
+        level = LevelLoader.load("Level1", gameplayViewport);
         //level = new Level(gameplayViewport);
 
-        //chaseCam = new ChaseCam(gameplayViewport.getCamera());
+        chaseCam = new ChaseCam(gameplayViewport.getCamera());
 
-        /*backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("raw/DonkeyKong64Music.mp3"));
-        backgroundMusic.play();*/
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("raw/DonkeyKong64Music.mp3"));
+        backgroundMusic.play();
 
-        startNewLevel();
+        //startNewLevel();
     }
 
     @Override
     public void resize(int width, int height) {
         gameplayViewport.update(width, height, true);
-        peachHud.viewport.update(width, height, true);
     }
 
     @Override
@@ -82,29 +75,61 @@ public class DonkeyScreen extends ScreenAdapter {
         level.render(batch);
 
         batch.end();
-
-        peachHud.render(batch, level.getPeach().getLives());
-    }
-
-    private void cambiarNivel(){
-
-        for(int i = 0; i < level.getKong().size; i++){
-
-            if(level.getKong().get(i).getLifes() == 0){
-                System.out.println("entra");
-                contNivel++;
-                startNewLevel();
-            }
-        }
     }
 
     private void startNewLevel(){
 
-        level = LevelLoader.load(Constants.LEVELS[contNivel], gameplayViewport);
+        int contNivel = 1;
+        String levelName = "";
 
-        chaseCam = new ChaseCam(gameplayViewport.getCamera());
+        //while(contNivel != 3){
+            if(contNivel == 1){
+                levelName = "Level" + contNivel;
+                level = LevelLoader.load(levelName, gameplayViewport);
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("raw/DonkeyKong64Music.mp3"));
-        backgroundMusic.play();
+                chaseCam.setCamera(level.getViewport().getCamera());
+
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+                for(int i = 0; i < level.getKong().size; i++){
+                    if (level.getKong().get(i).getLifes() == 0){
+                        contNivel++;
+                    }
+                }
+            }/*else{
+                levelName = "Level" + contNivel;
+
+                level = LevelLoader.load(levelName, gameplayViewport);
+
+                chaseCam.setCamera(level.getViewport().getCamera());
+
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                //contNivel++;
+            }*/
+        //}
+        //levelName = "LevelOne";
+        //level = LevelLoader.load(levelName, gameplayViewport);
+
+        //chaseCam.setCamera(level.getViewport().getCamera());
+        //onscreenControls.gigaGal = level.getGigaGal();
+        //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        //for(int i = 0; i < level.getKong().size; i++) {
+            /*if (level.getKong().get(i).getLifes() == 0){
+                levelName = "Level" + contNivel;
+                level = LevelLoader.load(levelName, gameplayViewport);
+
+                chaseCam.setCamera(level.getViewport().getCamera());
+                //onscreenControls.gigaGal = level.getGigaGal();
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }*//*else{
+                levelName = "LevelOne";
+                level = LevelLoader.load(levelName, gameplayViewport);
+
+                chaseCam.setCamera(level.getViewport().getCamera());
+                //onscreenControls.gigaGal = level.getGigaGal();
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }*/
+        //}
     }
 }
