@@ -101,7 +101,7 @@ public class Constants {
     //Ladder
     public static final String LADDER_SPRITE = "ladder";
     public static final int LADDER_EDGE = 0;
-    public static final float LADDER_HEIGHT = 120;
+    public static final float LADDER_HEIGHT = 125;
     public static final float LADDER_WIDTH = 40;
     public static final Vector2 LADDER_CENTER = new Vector2(31, 0);
 
@@ -118,6 +118,11 @@ public class Constants {
     public static final float ENEMY_COLLISION_RADIUS = 15;
     public static final float ENEMY_BOB_AMPLITUDE = 2;
 
+    //Lifes
+    public static final String LIFE_SPRITE = "life";
+    public static final Vector2 LIFE_CENTER = new Vector2(10, 0);
+    public static final float LIFE_WIDTH = 5;
+
     // Level Loading
     public static final String LEVEL_DIR = "levels";
     public static final String LEVEL_FILE_EXTENSION = "dt";
@@ -132,9 +137,29 @@ public class Constants {
     public static final String LEVEL_HEIGHT_KEY = "height";
     public static final String LEVEL_IDENTIFIER_KEY = "itemIdentifier";
     public static final String LEVEL_ENEMY_KONG_TAG = "Kong";
-    public static final String[] LEVELS = {"levels/Level1.dt", "levels/Level2.dt"};
+    public static final String[] LEVELS = {"levels/Level1.dt", "levels/Level2.dt", "levels/Level3.dt"};
+    public static final String[] LIFE_LEVELS = {"levels/Level2-1.dt"};
 
     //HUD
     public static final float HUD_VIEWPORT_SIZE = 480;
     public static final float HUD_MARGIN = 20;
+
+    // Victory/Game Over screens
+    public static final float LEVEL_END_DURATION = 5;
+    public static final String VICTORY_MESSAGE = "You are the Winrar!";
+    public static final String GAME_OVER_MESSAGE = "Game Over, Peach";
+    public static final int PEACH_COUNT =50;
+    public static final int ENEMY_COUNT =20;
+    public static final String FONT_FILE = "font/header.fnt";
+
+    //Onsreen Controls
+    public static final float ONSCREEN_CONTROLS_VIEWPORT_SIZE = 200;
+    public static final String MOVE_LEFT_BUTTON = "button-left";
+    public static final String MOVE_RIGHT_BUTTON = "button-right";
+    public static final String MOVE_DOWN_BUTTON = "button-down";
+    public static final String MOVE_UP_BUTTON = "button-up";
+    public static final String SHOOT_BUTTON = "button-shoot";
+    public static final String JUMP_BUTTON = "button-jump";
+    public static final Vector2 BUTTON_CENTER = new Vector2(15, 15);
+    public static final float BUTTON_RADIUS = 16;
 }

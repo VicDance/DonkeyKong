@@ -24,6 +24,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public OilBarrelAssets oilBarrelAssets;
     public EnemyAssets enemyAssets;
     public DoorAssets doorAssets;
+    public LifeAssets lifeAssets;
+    public OnScreenControlAssets onScreenControlAssets;
 
     private AssetManager assetManager;
 
@@ -49,6 +51,8 @@ public class Assets implements Disposable, AssetErrorListener {
         oilBarrelAssets = new OilBarrelAssets(atlas);
         enemyAssets = new EnemyAssets(atlas);
         doorAssets = new DoorAssets(atlas);
+        lifeAssets = new LifeAssets(atlas);
+        onScreenControlAssets = new OnScreenControlAssets(atlas);
     }
 
     @Override
@@ -191,6 +195,34 @@ public class Assets implements Disposable, AssetErrorListener {
         public EnemyAssets(TextureAtlas atlas) {
             enemy_left = atlas.findRegion(Constants.ENEMY_LEFT);
             enemy_right = atlas.findRegion(Constants.ENEMY_RIGHT);
+        }
+    }
+
+    public class  LifeAssets{
+
+        public final TextureAtlas.AtlasRegion life;
+
+        public LifeAssets(TextureAtlas atlas){
+            life = atlas.findRegion(Constants.LIFE_SPRITE);
+        }
+    }
+
+    public class OnScreenControlAssets{
+
+        public final TextureAtlas.AtlasRegion buttonRight;
+        public final TextureAtlas.AtlasRegion buttonLeft;
+        public final TextureAtlas.AtlasRegion buttonUp;
+        public final TextureAtlas.AtlasRegion buttonDown;
+        public final TextureAtlas.AtlasRegion buttonShoot;
+        public final TextureAtlas.AtlasRegion buttonJump;
+
+        public OnScreenControlAssets(TextureAtlas atlas){
+            buttonRight = atlas.findRegion(Constants.MOVE_RIGHT_BUTTON);
+            buttonLeft = atlas.findRegion(Constants.MOVE_LEFT_BUTTON);
+            buttonUp = atlas.findRegion(Constants.MOVE_UP_BUTTON);
+            buttonDown = atlas.findRegion(Constants.MOVE_DOWN_BUTTON);
+            buttonShoot = atlas.findRegion(Constants.SHOOT_BUTTON);
+            buttonJump = atlas.findRegion(Constants.JUMP_BUTTON);
         }
     }
 }

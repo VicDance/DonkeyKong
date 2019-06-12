@@ -10,6 +10,7 @@ import com.udacity.gamedev.donkeykong.entities.DonkeyKong;
 import com.udacity.gamedev.donkeykong.entities.Door;
 import com.udacity.gamedev.donkeykong.entities.Floor;
 import com.udacity.gamedev.donkeykong.entities.Ladder;
+import com.udacity.gamedev.donkeykong.entities.Life;
 import com.udacity.gamedev.donkeykong.entities.OilBarrel;
 import com.udacity.gamedev.donkeykong.entities.Peach;
 import com.udacity.gamedev.donkeykong.entities.Wall;
@@ -34,6 +35,7 @@ public class LevelLoader {
         Level level = new Level(viewport);
 
         //System.out.println(path);
+        //level.setContNivel(level.getContNivel()+1);
 
         FileHandle file = Gdx.files.internal(path);
 
@@ -95,7 +97,7 @@ public class LevelLoader {
                 if (identifier != null && identifier.equals(Constants.LEVEL_ENEMY_KONG_TAG)) {
                     //Gdx.app.log(TAG, "Loaded an enemy on that platform");
 
-                    final DonkeyKong kong = new DonkeyKong(level);
+                    final DonkeyKong kong = new DonkeyKong(level, floor);
 
                     level.getKong().add(kong);
                 }
@@ -160,7 +162,7 @@ public class LevelLoader {
 
                 //Gdx.app.log(TAG, "Loaded the exit portal at " + ladderPosition);
 
-                level.getLadders().add(new Ladder(40, 120, ladderPosition));
+                level.getLadders().add(new Ladder(40, 125, ladderPosition));
             }else if(item.get(Constants.LEVEL_IMAGENAME_KEY).equals(Constants.OIL_BARREL_SPRITE)){
                 //System.out.println("entra");
                 final Vector2 oilBarrelPosition = lowerLeftCorner.add(Constants.OIL_BARREL_CENTER);
@@ -171,6 +173,11 @@ public class LevelLoader {
                 final Vector2 doorPosition = lowerLeftCorner.add(Constants.EXIT_DOOR_CENTER);
 
                 level.getDoors().add(new Door(doorPosition, level));
+            }else if(item.get(Constants.LEVEL_IMAGENAME_KEY).equals(Constants.LIFE_SPRITE)){
+                //System.out.println("entra");
+                final  Vector2 lifePosition = lowerLeftCorner.add(Constants.LIFE_CENTER);
+
+                level.getLives().add(new Life(level, lifePosition));
             }
         }
     }
