@@ -13,6 +13,7 @@ import com.udacity.gamedev.donkeykong.entities.Enemy;
 import com.udacity.gamedev.donkeykong.entities.Fire;
 import com.udacity.gamedev.donkeykong.entities.Floor;
 import com.udacity.gamedev.donkeykong.entities.Ladder;
+import com.udacity.gamedev.donkeykong.entities.Life;
 import com.udacity.gamedev.donkeykong.entities.OilBarrel;
 import com.udacity.gamedev.donkeykong.entities.Peach;
 import com.udacity.gamedev.donkeykong.entities.Wall;
@@ -32,6 +33,10 @@ public class Level {
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Fire> fires;
     private Array<Door> doors;
+    private DelayedRemovalArray<Life> lives;
+    private boolean gameOver;
+    private boolean nextLevel;
+    private int contNivel = 0;
 
     public Level(Viewport viewport) {
 
@@ -56,6 +61,12 @@ public class Level {
         fires = new DelayedRemovalArray<Fire>();
 
         doors = new Array<Door>();
+
+        lives = new DelayedRemovalArray<Life>();
+
+        gameOver = false;
+
+        nextLevel = false;
         //initDebugLevel();
     }
 
@@ -107,10 +118,40 @@ public class Level {
         return doors;
     }
 
+    public DelayedRemovalArray<Life> getLives() {
+        return lives;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public boolean isNextLevel() {
+        return nextLevel;
+    }
+
+    public int getContNivel() {
+        return contNivel;
+    }
+
+    public void setContNivel(int contNivel) {
+        this.contNivel = contNivel;
+    }
+
     public void update(float delta) {
+
+        if(peach.getLives() <= 0){
+            gameOver = true;
+        }
 
         //peach
         peach.update(delta, floors);
+
+        for(DonkeyKong donkeyKong : kong){
+            if(donkeyKong.getLifes() == 0){
+                nextLevel = true;
+            }
+        }
 
         //kong
         kong.begin();
@@ -183,6 +224,12 @@ public class Level {
 
             door.update(delta);
         }
+
+        //Lives
+        for (Life life : lives) {
+
+            life.update(delta);
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -232,6 +279,11 @@ public class Level {
         for (Door door : doors) {
 
             door.render(batch);
+        }
+
+        for (Life life : lives) {
+
+            life.render(batch);
         }
     }
 

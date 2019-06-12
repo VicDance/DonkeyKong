@@ -56,11 +56,11 @@ public class DonkeyScreen extends ScreenAdapter {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("raw/DonkeyKong64Music.mp3"));
         backgroundMusic.play();
 
-        //onscreenControls = new OnscreenControls();
+        onscreenControls = new OnscreenControls();
 
-        /*if (onMobile()) {
+        if (onMobile()) {
             Gdx.input.setInputProcessor(onscreenControls);
-        }*/
+        }
 
         startNewLevel();
     }
@@ -77,8 +77,8 @@ public class DonkeyScreen extends ScreenAdapter {
         victoryOverlay.viewport.update(width, height, true);
         //chaseCam.setCamera(level.getViewport().getCamera());
 
-        //onscreenControls.viewport.update(width, height, true);
-        //onscreenControls.recalculateButtonPositions();
+        onscreenControls.viewport.update(width, height, true);
+        onscreenControls.recalculateButtonPositions();
     }
 
     @Override
@@ -104,11 +104,11 @@ public class DonkeyScreen extends ScreenAdapter {
         level.render(batch);
         batch.end();
 
-        //onscreenControls.render(batch);
+        onscreenControls.render(batch);
 
-        /*if (onMobile()) {
+        if (onMobile()) {
             onscreenControls.render(batch);
-        }*/
+        }
 
         peachHud.render(batch, level.getPeach().getLives());
 
@@ -173,7 +173,7 @@ public class DonkeyScreen extends ScreenAdapter {
 
         chaseCam = new ChaseCam(gameplayViewport.getCamera(), level.getPeach());
 
-        //onscreenControls.setPeach(level.getPeach());
+        onscreenControls.setPeach(level.getPeach());
 
         if(!backgroundMusic.isPlaying()){
             backgroundMusic.play();
