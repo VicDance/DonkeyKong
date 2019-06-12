@@ -10,14 +10,15 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.udacity.gamedev.donkeykong.entities.Peach;
 import com.udacity.gamedev.donkeykong.util.Constants;
 
 public class VictoryOverlay {
 
-    /*public final static String TAG = VictoryOverlay.class.getName();
+    public final static String TAG = VictoryOverlay.class.getName();
     public final Viewport viewport;
     final BitmapFont font;
-    Array<Explosion> explosions;
+    Array<Peach> peaches;
 
     public VictoryOverlay() {
         this.viewport = new ExtendViewport(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
@@ -27,15 +28,15 @@ public class VictoryOverlay {
     }
 
     public void init() {
-        explosions = new Array<Explosion>(Constants.EXPLOSION_COUNT);
-        for (int i = 0; i < Constants.EXPLOSION_COUNT; i++) {
-            Explosion explosion = new Explosion(new Vector2(
+        peaches = new Array<Peach>(Constants.PEACH_COUNT);
+        for (int i = 0; i < Constants.PEACH_COUNT; i++) {
+            Peach peach = new Peach(new Vector2(
                     MathUtils.random(viewport.getWorldWidth()),
                     MathUtils.random(viewport.getWorldHeight())
             ));
-            explosion.offset = MathUtils.random(Constants.LEVEL_END_DURATION);
+            peach.offset = MathUtils.random(Constants.LEVEL_END_DURATION);
 
-            explosions.add(explosion);
+            peaches.add(peach);
         }
     }
 
@@ -45,13 +46,13 @@ public class VictoryOverlay {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
 
-        for (Explosion explosion : explosions){
-            explosion.render(batch);
+        for (Peach peach : peaches){
+            peach.render(batch);
         }
 
         font.draw(batch, Constants.VICTORY_MESSAGE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2.5f, 0, Align.center, false);
 
         batch.end();
 
-    }*/
+    }
 }

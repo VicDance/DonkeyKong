@@ -1,6 +1,7 @@
 package com.udacity.gamedev.donkeykong.overlays;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,15 +10,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.udacity.gamedev.donkeykong.entities.DonkeyKong;
+import com.udacity.gamedev.donkeykong.entities.Floor;
 import com.udacity.gamedev.donkeykong.util.Constants;
+import com.udacity.gamedev.donkeykong.util.Enums;
 import com.udacity.gamedev.donkeykong.util.Utils;
 
 
 public class GameOverOverlay {
 
-    /*public final Viewport viewport;
+    public final Viewport viewport;
     final BitmapFont font;
-    Array<Enemy> enemies;
+    Array<DonkeyKong> kongs;
     long startTime;
 
     public GameOverOverlay() {
@@ -30,20 +34,18 @@ public class GameOverOverlay {
     public void init() {
         startTime = TimeUtils.nanoTime();
 
-        enemies = new Array<Enemy>(Constants.ENEMY_COUNT);
+        kongs = new Array<DonkeyKong>(Constants.ENEMY_COUNT);
 
         for (int i = 0; i < Constants.ENEMY_COUNT; i++) {
 
-            Platform fakePlatform = new Platform(
+            Floor fakeFloor = new Floor(
                     MathUtils.random(viewport.getWorldWidth()),
                     MathUtils.random(-Constants.ENEMY_CENTER.y/2, viewport.getWorldHeight()
                     ), 0, 0);
 
-            Enemy enemy = new Enemy(fakePlatform);
+            DonkeyKong kong = new DonkeyKong(fakeFloor);
 
-            enemies.add(enemy);
-
-
+            kongs.add(kong);
         }
 
     }
@@ -57,16 +59,15 @@ public class GameOverOverlay {
         float timeElapsed = Utils.secondsSince(startTime);
         int enemiesToShow = (int) (Constants.ENEMY_COUNT * (timeElapsed / Constants.LEVEL_END_DURATION));
 
-        for (int i = 0; i < enemiesToShow; i++){
-            Enemy enemy = enemies.get(i);
-            enemy.update(0);
-            enemy.render(batch);
-        }
-
+        /*for (int i = 0; i < enemiesToShow; i++){
+            DonkeyKong kong = kongs.get(i);
+            kong.update(0);
+            kong.render(batch);
+            kong.setDirection(Enums.Direction.STANDING);
+        }*/
 
         font.draw(batch, Constants.GAME_OVER_MESSAGE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2.5f, 0, Align.center, false);
 
         batch.end();
-
-    }*/
+    }
 }
