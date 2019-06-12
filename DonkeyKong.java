@@ -27,11 +27,11 @@ public class DonkeyKong {
 
     private int lifes;
 
-    public DonkeyKong(Level level) {
+    public DonkeyKong(Level level, Floor floor) {
 
-        //this.floor = floor;
+        this.floor = floor;
         this.level = level;
-        position = new Vector2(Constants.KONG_EYE_POSITION);
+        position = new Vector2(floor.left, floor.top + Constants.KONG_CENTER.y);
         //velocity = new Vector2();
         direction = Direction.STANDING;
         startTimeBarrel = TimeUtils.nanoTime();
@@ -39,8 +39,24 @@ public class DonkeyKong {
         lifes = Constants.KONG_LIFES;
     }
 
+    public DonkeyKong(Floor floor){
+        this.floor = floor;
+    }
+
     public Vector2 getPosition() {
         return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     public int getLifes() {
@@ -67,7 +83,7 @@ public class DonkeyKong {
             direction = Direction.STANDING;
         }
 
-        Utils.drawTextureRegion(batch, region, Constants.KONG_EYE_POSITION.x, Constants.KONG_EYE_POSITION.y-3);
+        Utils.drawTextureRegion(batch, region, position.x, position.y - 27);
     }
 
     public void update(float delta) {
@@ -76,8 +92,8 @@ public class DonkeyKong {
             Vector2 barrelPosition;
             //System.out.println(elapsedTime);
             barrelPosition = new Vector2(
-                    position.x - Constants.KONG_OFFSET.x + 40,
-                    position.y - Constants.KONG_OFFSET.y - 17
+                    position.x + 30,
+                    position.y - 25
             );
 
             if (elapsedTime > 2000000000) {

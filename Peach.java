@@ -2,6 +2,7 @@ package com.udacity.gamedev.donkeykong.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,12 +39,25 @@ public class Peach {
 
     private boolean fire = false;
 
-    private Sound shotSound;
-    private Sound plafSound;
-    private Sound plopSound;
+    private Music shotSound;
+    private Music plafSound;
+    private Music plopSound;
     private Sound kongSound;
 
     private int lives;
+
+    private boolean lifeLevel;
+
+    private boolean backToLevel;
+
+    public float offset = 0;
+
+    private boolean rightButtonPressed;
+    private boolean leftButtonPressed;
+    private boolean upButtonPressed;
+    private boolean downButtonPressed;
+    private boolean jumpButtonPressed;
+    private boolean shootButtonPressed;
 
     public Peach(Vector2 spawnLocation, Level level) {
 
@@ -55,6 +69,10 @@ public class Peach {
         this.velocity = new Vector2();
 
         init();
+    }
+
+    public Peach(Vector2 position){
+        this.position = position;
     }
 
     public Vector2 getPosition() {
@@ -69,9 +87,43 @@ public class Peach {
         return lives;
     }
 
+    public boolean isLifeLevel() {
+        return lifeLevel;
+    }
+
+    public void setRightButtonPressed(boolean rightButtonPressed) {
+        this.rightButtonPressed = rightButtonPressed;
+    }
+
+    public void setLeftButtonPressed(boolean leftButtonPressed) {
+        this.leftButtonPressed = leftButtonPressed;
+    }
+
+    public void setUpButtonPressed(boolean upButtonPressed) {
+        this.upButtonPressed = upButtonPressed;
+    }
+
+    public void setDownButtonPressed(boolean downButtonPressed) {
+        this.downButtonPressed = downButtonPressed;
+    }
+
+    public void setJumpButtonPressed(boolean jumpButtonPressed) {
+        this.jumpButtonPressed = jumpButtonPressed;
+    }
+
+    public void setShootButtonPressed(boolean shootButtonPressed) {
+        this.shootButtonPressed = shootButtonPressed;
+    }
+
+    public boolean isBackToLevel() {
+        return backToLevel;
+    }
+
     public void init() {
 
         this.lives = Constants.INITIAL_LIVES;
+        this.lifeLevel = false;
+        this.backToLevel = false;
         respawn();
     }
 
@@ -194,9 +246,10 @@ public class Peach {
                     Constants.LADDER_HEIGHT
             );
 
-            if (peachBounds.overlaps(ladderBounds) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                //System.out.println("llega");
+            if (peachBounds.overlaps(ladderBounds) && Gdx.input.isKeyPressed(Input.Keys.UP) || upButtonPressed) {
                 position.y += delta + 30;
+            }else if(peachBounds.overlaps(ladderBounds) && Gdx.input.isKeyPressed(Input.Keys.DOWN) || downButtonPressed){
+                position.y -= delta + 20;
             }
         }
 
@@ -210,7 +263,6 @@ public class Peach {
             );
 
             if (peachBounds.overlaps(enemyBounds)) {
-                //System.out.println("entra");
                 if (position.x < level.getEnemies().get(i).getPosition().x) {
                     recoilFromEnemy(Direction.LEFT);
                     lives--;
@@ -222,8 +274,7 @@ public class Peach {
 
             if (fire) {
                 if (fireBounds.overlaps(enemyBounds)) {
-                    //System.out.println("pasa");
-                    plopSound = Gdx.audio.newSound(Gdx.files.internal("raw/plop.mp3"));
+                    plopSound = Gdx.audio.newMusic(Gdx.files.internal("raw/plop.mp3"));
                     plopSound.play();
 
                     level.getEnemies().get(i).setActive(false);
@@ -232,15 +283,12 @@ public class Peach {
         }
 
         for (int i = 0, j = 0; i < level.getFires().size && j < level.getKong().size; i++, j++) {
-            //if(fire) {
-            //System.out.println(level.getFires().get(i).getPosition().dst(level.getKong().get(j).getPosition()));
             if (level.getFires().get(i).getPosition().dst(level.getKong().get(j).getPosition()) < 50) {
-                //System.out.println("entra");
+
                 level.getFires().get(i).setActive(false);
 
                 level.getKong().get(j).setLifes(level.getKong().get(j).getLifes() - 1);
             }
-            //}
         }
 
         for (int i = 0; i < level.getDoors().size; i++) {
@@ -253,21 +301,37 @@ public class Peach {
             );
 
             if (peachBounds.overlaps(doorBounds)) {
+                lifeLevel = true;
+            }
+        }
 
+        for(int i = 0; i < level.getLives().size; i++){
+
+            Rectangle lifeBounds = new Rectangle(
+                    level.getLives().get(i).getPosition().x +  Constants.LIFE_WIDTH,
+                    level.getLives().get(i).getPosition().y + +  Constants.LIFE_WIDTH,
+                    Constants.LIFE_WIDTH,
+                    Constants.LIFE_WIDTH
+            );
+
+            if(peachBounds.overlaps(lifeBounds)){
+                lives++;
+                level.getLives().get(i).setActive(false);
+                backToLevel = true;
             }
         }
 
         if (jumpState != JumpState.RECOILING) {
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || leftButtonPressed) {
                 moveLeft(delta);
-            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || rightButtonPressed) {
                 moveRight(delta);
             } else {
                 walkState = WalkState.NOT_WALKING;
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || jumpButtonPressed) {
             switch (jumpState) {
                 case GROUNDED:
                     startJump();
@@ -280,7 +344,7 @@ public class Peach {
         }
 
         //shot
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z) || shootButtonPressed) {
             shooting();
         } else {
             endShooting();
@@ -369,7 +433,7 @@ public class Peach {
         }
     }
 
-    private void shooting() {
+    public void shooting() {
         Vector2 firePosition;
 
         shotState = ShotState.SHOOTING;
@@ -386,7 +450,7 @@ public class Peach {
             );
         }
 
-        shotSound = Gdx.audio.newSound(Gdx.files.internal("raw/disparoFuego.mp3"));
+        shotSound = Gdx.audio.newMusic(Gdx.files.internal("raw/disparoFuego.mp3"));
         shotSound.play();
 
         level.spawnFire(firePosition, facing);
@@ -401,7 +465,7 @@ public class Peach {
 
     private void recoilFromEnemy(Direction direction) {
 
-        plafSound = Gdx.audio.newSound(Gdx.files.internal("raw/plaf.mp3"));
+        plafSound = Gdx.audio.newMusic(Gdx.files.internal("raw/plaf.mp3"));
         plafSound.play();
 
         jumpState = JumpState.RECOILING;

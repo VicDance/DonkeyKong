@@ -1,5 +1,6 @@
 package com.udacity.gamedev.donkeykong.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,8 @@ import com.udacity.gamedev.donkeykong.util.Enums.*;
 import com.udacity.gamedev.donkeykong.util.Utils;
 
 public class Barrel {
+
+    public static final String TAG = Barrel.class.toString();
 
     private Direction direction;
     private final Level level;
@@ -87,7 +90,7 @@ public class Barrel {
             );
 
             if (barrelBounds.overlaps(wallBounds)) {
-                //System.out.println("choca");
+                //Gdx.app.log(TAG, "choca");
                 position.y = position.y - 120;
                 if (direction == Direction.RIGHT) {
                     direction = Direction.LEFT;

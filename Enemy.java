@@ -20,7 +20,7 @@ public class Enemy {
     private long startTime;
     private final float bobOffset;
 
-    public Enemy(Level level, Direction direction, Vector2 position/*, OilBarrel oilBarrel*/) {
+    public Enemy(Level level, Direction direction, Vector2 position) {
         this.direction = direction;
         this.position = position;
         this.level = level;
